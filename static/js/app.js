@@ -18,8 +18,12 @@ function buildTable(data) {
         Object.values(dataRow).forEach((val) => { 
             let cell = row.append("td"); 
             cell.text(val);
-            }
-        );
+            // Hack-ish code to address 'html character references' (apostraphes)
+            var elem = document.createElement('textarea')
+            elem.innerHTML = val
+            text = elem.value
+            cell.text(text);
+        });
     });
 }
 
@@ -40,7 +44,8 @@ function handleClick() {
     // just be the original tableData
     buildTable(filteredData);
 };
+
 // Attach an event to list for the form button
-d3.select("filter-btn").on("click", handleClick);
+d3.selectAll("#filter-btn").on("click", handleClick);
 // Build the table when the page loads
 buildTable(tableData);
